@@ -7,8 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-
-public class DeleteInstructorResponse {
+public class GetInstructorResponse {
 
     private int userId;
 

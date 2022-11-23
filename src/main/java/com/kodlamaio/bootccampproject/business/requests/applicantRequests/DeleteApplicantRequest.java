@@ -12,4 +12,6 @@ public class DeleteApplicantRequest {
 
     private int userId;
 
+
+
 }

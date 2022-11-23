@@ -3,13 +3,19 @@ package com.kodlamaio.bootccampproject.business.abstracts;
 import com.kodlamaio.bootccampproject.business.requests.applicantRequests.CreateApplicantRequest;
 import com.kodlamaio.bootccampproject.business.requests.applicantRequests.DeleteApplicantRequest;
 import com.kodlamaio.bootccampproject.business.requests.applicantRequests.UpdateApplicantRequest;
-import com.kodlamaio.bootccampproject.business.responses.applicatResponses.CreateApplicantResponse;
-import com.kodlamaio.bootccampproject.business.responses.applicatResponses.DeleteApplicantResponse;
-import com.kodlamaio.bootccampproject.business.responses.applicatResponses.UpdateApplicantResponse;
+import com.kodlamaio.bootccampproject.business.responses.applicatResponses.*;
+import com.kodlamaio.bootccampproject.core.utilities.results.DataResult;
+import com.kodlamaio.bootccampproject.core.utilities.results.Result;
+
+import java.util.List;
 
 public interface ApplicantService {
 
-    CreateApplicantResponse add (CreateApplicantRequest createApplicantRequest);
-    UpdateApplicantResponse update(UpdateApplicantRequest updateApplicantRequest);
-    DeleteApplicantResponse delete (DeleteApplicantRequest deleteApplicantRequest);
+    DataResult<CreateApplicantResponse> add (CreateApplicantRequest createApplicantRequest);
+    DataResult<UpdateApplicantResponse> update(UpdateApplicantRequest updateApplicantRequest);
+    Result delete (int id );
+
+    DataResult<List<GetAllApplicantResponse>> getAll();
+
+    DataResult<GetApplicantResponse> getById(int id);
 }

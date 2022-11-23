@@ -18,7 +18,5 @@ public class CreateInstructorResponse {
 
     private String email;
 
-    private String password;
-
     private String companyName;
 }

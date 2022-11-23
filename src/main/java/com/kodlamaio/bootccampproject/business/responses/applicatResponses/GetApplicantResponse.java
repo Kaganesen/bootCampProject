@@ -1,4 +1,4 @@
-package com.kodlamaio.bootccampproject.business.responses.instructorResponses;
+package com.kodlamaio.bootccampproject.business.responses.applicatResponses;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,8 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-
-public class DeleteInstructorResponse {
+public class GetApplicantResponse {
 
     private int userId;
 
@@ -18,6 +17,6 @@ public class DeleteInstructorResponse {
 
     private String email;
 
-    private String companyName;
+    private String about;
 
 }

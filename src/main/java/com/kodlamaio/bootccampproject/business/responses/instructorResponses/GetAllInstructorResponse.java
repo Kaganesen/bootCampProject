@@ -5,10 +5,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-
-public class DeleteInstructorResponse {
+@AllArgsConstructor
+public class GetAllInstructorResponse {
 
     private int userId;
 
@@ -19,5 +18,6 @@ public class DeleteInstructorResponse {
     private String email;
 
     private String companyName;
+
 
 }

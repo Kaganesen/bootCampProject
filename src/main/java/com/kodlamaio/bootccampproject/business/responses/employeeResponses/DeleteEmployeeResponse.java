@@ -18,7 +18,5 @@ public class DeleteEmployeeResponse {
 
     private String email;
 
-    private String password;
-
     private String position;
 }

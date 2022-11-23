@@ -18,7 +18,5 @@ public class UpdateApplicantResponse {
 
     private String email;
 
-    private String password;
-
     private String about;
 }

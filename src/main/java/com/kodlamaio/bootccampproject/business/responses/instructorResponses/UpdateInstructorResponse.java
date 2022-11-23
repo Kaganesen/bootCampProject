@@ -18,8 +18,6 @@ public class UpdateInstructorResponse {
 
     private String email;
 
-    private String password;
-
     private String companyName;
 
 }
