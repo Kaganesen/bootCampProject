@@ -14,17 +14,17 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/applicant")
+@RequestMapping("/api/applicants")
 public class ApplicantController {
 
     private ApplicantService applicantService;
 
     @PostMapping()
-    public DataResult<CreateApplicantResponse> create (CreateApplicantRequest createApplicantRequest) {
+    public DataResult<CreateApplicantResponse> create (@RequestBody CreateApplicantRequest createApplicantRequest) {
         return this.applicantService.add(createApplicantRequest);
     }
     @PutMapping()
-    public DataResult<UpdateApplicantResponse> update(UpdateApplicantRequest updateApplicantRequest){
+    public DataResult<UpdateApplicantResponse> update(@RequestBody UpdateApplicantRequest updateApplicantRequest){
         return this.applicantService.update(updateApplicantRequest);
     }
     @DeleteMapping("/{id}")
