@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 
 public class DeleteApplicantRequest {
 
-    private int userId;
+    private int id;
 
 
 

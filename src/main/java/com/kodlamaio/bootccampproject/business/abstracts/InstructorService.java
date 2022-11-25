@@ -8,6 +8,7 @@ import com.kodlamaio.bootccampproject.business.responses.instructorResponses.Get
 import com.kodlamaio.bootccampproject.business.responses.instructorResponses.UpdateInstructorResponse;
 import com.kodlamaio.bootccampproject.core.utilities.results.DataResult;
 import com.kodlamaio.bootccampproject.core.utilities.results.Result;
+import com.kodlamaio.bootccampproject.entities.users.Instructor;
 
 import java.util.List;
 
@@ -22,6 +23,8 @@ public interface InstructorService {
     DataResult<UpdateInstructorResponse> update(UpdateInstructorRequest updateInstructorRequest);
 
     Result delete(int id);
+
+    Instructor getByInstructorId(int id);
 
 
 }

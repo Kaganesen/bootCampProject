@@ -13,7 +13,6 @@ import javax.persistence.*;
 @Table(name = "employees")
 public class Employee extends User {
 
-
     @Column(name = "position")
     private String position;
 
