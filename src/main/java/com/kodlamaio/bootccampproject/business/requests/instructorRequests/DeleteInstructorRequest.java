@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class DeleteInstructorRequest {
 
-    private int userId;
+    private int id;
 }

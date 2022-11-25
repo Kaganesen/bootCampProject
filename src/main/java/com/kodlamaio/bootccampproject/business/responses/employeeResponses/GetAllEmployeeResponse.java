@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class GetAllEmployeeResponse {
 
-    private int userId;
+    private int id;
 
     private String firstName;
 

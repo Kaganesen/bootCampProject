@@ -18,5 +18,7 @@ public class CreateApplicantRequest {
 
     private String password;
 
+    private String nationalIdentity;
+
     private String about;
 }

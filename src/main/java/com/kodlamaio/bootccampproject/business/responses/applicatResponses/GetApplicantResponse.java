@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class GetApplicantResponse {
 
-    private int userId;
+    private int id;
 
     private String firstName;
 
