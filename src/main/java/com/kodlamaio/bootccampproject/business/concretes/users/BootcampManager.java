@@ -1,5 +1,6 @@
 package com.kodlamaio.bootccampproject.business.concretes.users;
 
+import com.kodlamaio.bootccampproject.business.abstracts.ApplicantService;
 import com.kodlamaio.bootccampproject.business.abstracts.BootcampService;
 import com.kodlamaio.bootccampproject.business.abstracts.InstructorService;
 import com.kodlamaio.bootccampproject.business.constants.Messages;
@@ -32,7 +33,6 @@ public class BootcampManager implements BootcampService {
     private ModelMapperService modelMapperService;
 
     private InstructorService instructorService;
-
     @Override
     public DataResult<CreateBootcampResponse> add(CreateBootcampRequest createBootcampRequest) {
         checkIfBootcampByInstructorId(createBootcampRequest.getInstructorId());

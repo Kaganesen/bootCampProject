@@ -1,11 +1,7 @@
 package com.kodlamaio.bootccampproject.business.abstracts;
 
-import com.kodlamaio.bootccampproject.business.requests.applicantRequests.CreateApplicantRequest;
-import com.kodlamaio.bootccampproject.business.requests.applicantRequests.UpdateApplicantRequest;
 import com.kodlamaio.bootccampproject.business.requests.applicationRequests.CreateApplicationRequest;
 import com.kodlamaio.bootccampproject.business.requests.applicationRequests.UpdateApplicationRequest;
-import com.kodlamaio.bootccampproject.business.responses.applicatResponses.CreateApplicantResponse;
-import com.kodlamaio.bootccampproject.business.responses.applicatResponses.UpdateApplicantResponse;
 import com.kodlamaio.bootccampproject.business.responses.applicationResponses.CreateApplicationResponse;
 import com.kodlamaio.bootccampproject.business.responses.applicationResponses.GetAllApplicationsResponse;
 import com.kodlamaio.bootccampproject.business.responses.applicationResponses.GetApplicationResponse;

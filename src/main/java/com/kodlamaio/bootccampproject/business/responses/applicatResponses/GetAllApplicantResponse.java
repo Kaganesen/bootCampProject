@@ -17,6 +17,8 @@ public class GetAllApplicantResponse {
 
     private String email;
 
+    private String nationalIdentity;
+
     private String about;
 
 }

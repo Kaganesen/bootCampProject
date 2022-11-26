@@ -18,4 +18,5 @@ public interface BlacklistService {
     DataResult<GetBlacklistResponse> getById (int id);
     DataResult<List<GetAllBlacklistResponse>> getAll();
     Result delete (int id);
+    void checkIfExistsByApplicantId(int id);
 }

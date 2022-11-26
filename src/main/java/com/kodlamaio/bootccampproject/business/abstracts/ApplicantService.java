@@ -18,4 +18,8 @@ public interface ApplicantService {
     DataResult<List<GetAllApplicantResponse>> getAll();
 
     DataResult<GetApplicantResponse> getById(int id);
+
+    void checkIfExistByApplicantId(int applicantId);
+
+    void checkIfApplicantByNationalId(String nationalIdentity);
 }

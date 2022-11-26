@@ -1,5 +1,6 @@
 package com.kodlamaio.bootccampproject.business.concretes.users;
 
+import com.kodlamaio.bootccampproject.business.abstracts.ApplicantService;
 import com.kodlamaio.bootccampproject.business.abstracts.BlacklistService;
 import com.kodlamaio.bootccampproject.business.constants.Messages;
 import com.kodlamaio.bootccampproject.business.requests.blacklistRequests.CreateBlacklistRequest;
@@ -28,19 +29,20 @@ public class BlacklistManager implements BlacklistService {
 
     private BlackListRepository blackListRepository;
     private ModelMapperService modelMapperService;
-
+    private ApplicantService applicantService;
     @Override
     public DataResult<CreateBlacklistResponse> add(CreateBlacklistRequest createBlacklistRequest) {
+        checkIfExistsByApplicantId(createBlacklistRequest.getApplicantId());
         BlackList blackList = this.modelMapperService.forRequest().map(createBlacklistRequest, BlackList.class);
         this.blackListRepository.save(blackList);
         CreateBlacklistResponse createBlacklistResponse = this.modelMapperService.forResponse().map(blackList, CreateBlacklistResponse.class);
 
-        return new SuccessDataResult<>(createBlacklistResponse);
+        return new SuccessDataResult<>(createBlacklistResponse,Messages.BlacklistAdded);
     }
 
     @Override
     public DataResult<UpdateBlacklistResponse> update(UpdateBlacklistRequest updateBlacklistRequest) {
-        checkIfBlacklistExistsById(updateBlacklistRequest.getId());
+        checkIfExistsByApplicantId(updateBlacklistRequest.getApplicantId());
         BlackList blackList = this.modelMapperService.forRequest().map(updateBlacklistRequest, BlackList.class);
         this.blackListRepository.save(blackList);
         UpdateBlacklistResponse updateBlacklistResponse = this.modelMapperService.forResponse().map(blackList, UpdateBlacklistResponse.class);
@@ -50,6 +52,7 @@ public class BlacklistManager implements BlacklistService {
 
     @Override
     public DataResult<GetBlacklistResponse> getById(int id) {
+        checkIfExistsByBlacklistId(id);
         BlackList blackList = this.blackListRepository.findById(id).orElse(null);
         GetBlacklistResponse getBlacklistResponse = this.modelMapperService.forResponse().map(blackList, GetBlacklistResponse.class);
 
@@ -66,23 +69,27 @@ public class BlacklistManager implements BlacklistService {
 
     @Override
     public Result delete(int id) {
-        checkIfBlacklistExistsById(id);
+        checkIfExistsByBlacklistId(id);
         this.blackListRepository.deleteById(id);
 
         return new SuccessResult(Messages.DataDeleted);
     }
 
-    public void checkIfBlacklistExistsById (int id){
-
-        BlackList blackList = this.blackListRepository.findById(id).orElse(null);
-        if(blackList == null){
-            throw  new BusinessException(Messages.BlacklistUsed);
+    @Override
+    public void checkIfExistsByApplicantId(int id) {
+        if (this.blackListRepository.existsByApplicantId(id)) {
+            throw new BusinessException(Messages.ApplicantIdUsed);
         }
+
     }
 
+    private void checkIfExistsByBlacklistId(int id) {
 
+        if (!this.blackListRepository.existsById(id)) {
+            throw new BusinessException(Messages.BlacklistNotFound);
 
-
+        }
+    }
 
 
 }

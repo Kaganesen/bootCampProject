@@ -18,5 +18,7 @@ public class DeleteApplicantResponse {
 
     private String email;
 
+    private String nationalIdentity;
+
     private String about;
 }

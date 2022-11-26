@@ -1,5 +1,6 @@
 package com.kodlamaio.bootccampproject.business.concretes.users;
 
+import com.kodlamaio.bootccampproject.business.abstracts.ApplicantService;
 import com.kodlamaio.bootccampproject.business.abstracts.ApplicationService;
 import com.kodlamaio.bootccampproject.business.constants.Messages;
 import com.kodlamaio.bootccampproject.business.requests.applicationRequests.CreateApplicationRequest;
@@ -16,18 +17,22 @@ import com.kodlamaio.bootccampproject.core.utilities.results.SuccessDataResult;
 import com.kodlamaio.bootccampproject.core.utilities.results.SuccessResult;
 import com.kodlamaio.bootccampproject.dataAccess.abstracts.ApplicationRepository;
 import com.kodlamaio.bootccampproject.entities.applications.Application;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class ApplicationManager implements ApplicationService {
 
 
     private ApplicationRepository applicationRepository;
 
     private ModelMapperService modelMapperService;
+
+    private ApplicantService applicantService;
 
     @Override
     public DataResult<CreateApplicationResponse> add(CreateApplicationRequest createApplicationRequest) {
@@ -40,14 +45,14 @@ public class ApplicationManager implements ApplicationService {
 
     @Override
     public Result delete(int id) {
-        checkIfApplicationByid(id);
+        checkIfNotExistsApplicationByid(id);
         this.applicationRepository.deleteById(id);
         return new SuccessResult(Messages.DataDeleted);
     }
 
     @Override
     public DataResult<UpdateApplicationResponse> update(UpdateApplicationRequest updateApplicationRequest) {
-        checkIfApplicationByid(updateApplicationRequest.getId());
+        checkIfNotExistsApplicationByid(updateApplicationRequest.getApplicantId());
         Application application = this.modelMapperService.forRequest().map(updateApplicationRequest, Application.class);
         this.applicationRepository.save(application);
         UpdateApplicationResponse updateApplicationResponse = this.modelMapperService.forResponse().map(application, UpdateApplicationResponse.class);
@@ -57,7 +62,7 @@ public class ApplicationManager implements ApplicationService {
 
     @Override
     public DataResult<GetApplicationResponse> getById(int id) {
-        checkIfApplicationByid(id);
+        checkIfNotExistsApplicationByid(id);
         Application application = this.applicationRepository.findById(id).get();
         GetApplicationResponse getApplicationResponse = this.modelMapperService.forResponse().map(application, GetApplicationResponse.class);
 
@@ -71,11 +76,14 @@ public class ApplicationManager implements ApplicationService {
         return new SuccessDataResult<>(getAllApplicationsResponses, Messages.DataListed);
     }
 
-    private void checkIfApplicationByid(int id) {
-        Application application = this.applicationRepository.findById(id).orElse(null);
-        if (application == null) {
-            throw new BusinessException(Messages.ApplicationExists);
+    private void checkIfNotExistsApplicationByid(int id) {
+
+        if (!this.applicationRepository.existsById(id)) {
+            throw new BusinessException(Messages.ApplicationNotExists);
         }
     }
+
+
+
 
 }
