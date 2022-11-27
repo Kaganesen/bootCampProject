@@ -6,6 +6,7 @@ import com.kodlamaio.bootccampproject.business.responses.instructorResponses.Cre
 import com.kodlamaio.bootccampproject.business.responses.instructorResponses.GetAllInstructorResponse;
 import com.kodlamaio.bootccampproject.business.responses.instructorResponses.GetInstructorResponse;
 import com.kodlamaio.bootccampproject.business.responses.instructorResponses.UpdateInstructorResponse;
+import com.kodlamaio.bootccampproject.core.utilities.exceptions.BusinessException;
 import com.kodlamaio.bootccampproject.core.utilities.results.DataResult;
 import com.kodlamaio.bootccampproject.core.utilities.results.Result;
 import com.kodlamaio.bootccampproject.entities.users.Instructor;
@@ -24,7 +25,8 @@ public interface InstructorService {
 
     Result delete(int id);
 
-    Instructor getByInstructorId(int id);
+    void checkIfExistsByInstructorId(int id) throws BusinessException;
+
 
 
 }

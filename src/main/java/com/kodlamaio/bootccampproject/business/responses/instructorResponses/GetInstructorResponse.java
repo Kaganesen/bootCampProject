@@ -17,7 +17,7 @@ public class GetInstructorResponse {
 
     private String lastName;
 
-    private String nationalId;
+    private String nationalIdentity;
 
     private LocalDate dateOfBirth;
 

@@ -9,6 +9,7 @@ import com.kodlamaio.bootccampproject.core.utilities.results.Result;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -19,7 +20,7 @@ public class BootcampController {
     private BootcampService bootcampService;
 
     @PostMapping
-    DataResult<CreateBootcampResponse> create(@RequestBody CreateBootcampRequest createBootcampRequest) {
+    DataResult<CreateBootcampResponse> create(@Valid @RequestBody CreateBootcampRequest createBootcampRequest) {
         return this.bootcampService.add(createBootcampRequest);
     }
     @GetMapping
@@ -27,7 +28,7 @@ public class BootcampController {
         return this.bootcampService.getAll();
     }
     @PutMapping
-    DataResult<UpdateBootcampResponse> update (@RequestBody UpdateBootcampRequest updateBootcampRequest){
+    DataResult<UpdateBootcampResponse> update (@Valid @RequestBody UpdateBootcampRequest updateBootcampRequest){
         return this.bootcampService.update(updateBootcampRequest);
     }
     @GetMapping("/{id}")

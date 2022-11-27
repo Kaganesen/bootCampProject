@@ -12,6 +12,7 @@ import com.kodlamaio.bootccampproject.core.utilities.results.Result;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @AllArgsConstructor
@@ -23,12 +24,12 @@ public class BlacklistController {
 
 
     @PostMapping
-    DataResult<CreateBlacklistResponse> add (@RequestBody CreateBlacklistRequest createBlacklistRequest){
+    DataResult<CreateBlacklistResponse> create (@Valid @RequestBody CreateBlacklistRequest createBlacklistRequest){
         return this.blacklistService.add(createBlacklistRequest);
 
     }
     @PutMapping
-    DataResult<UpdateBlacklistResponse> update (@RequestBody UpdateBlacklistRequest updateBlacklistRequest){
+    DataResult<UpdateBlacklistResponse> update (@Valid @RequestBody UpdateBlacklistRequest updateBlacklistRequest){
         return this.blacklistService.update(updateBlacklistRequest);
 
     }

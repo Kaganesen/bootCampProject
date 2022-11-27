@@ -2,14 +2,14 @@ package com.kodlamaio.bootccampproject.api.controllers;
 
 import com.kodlamaio.bootccampproject.business.abstracts.ApplicantService;
 import com.kodlamaio.bootccampproject.business.requests.applicantRequests.CreateApplicantRequest;
-import com.kodlamaio.bootccampproject.business.requests.applicantRequests.DeleteApplicantRequest;
 import com.kodlamaio.bootccampproject.business.requests.applicantRequests.UpdateApplicantRequest;
-import com.kodlamaio.bootccampproject.business.responses.applicatResponses.*;
+import com.kodlamaio.bootccampproject.business.responses.applicantResponses.*;
 import com.kodlamaio.bootccampproject.core.utilities.results.DataResult;
 import com.kodlamaio.bootccampproject.core.utilities.results.Result;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -20,11 +20,11 @@ public class ApplicantController {
     private ApplicantService applicantService;
 
     @PostMapping()
-    public DataResult<CreateApplicantResponse> create (@RequestBody CreateApplicantRequest createApplicantRequest) {
+    public DataResult<CreateApplicantResponse> create (@Valid @RequestBody CreateApplicantRequest createApplicantRequest) {
         return this.applicantService.add(createApplicantRequest);
     }
     @PutMapping()
-    public DataResult<UpdateApplicantResponse> update(@RequestBody UpdateApplicantRequest updateApplicantRequest){
+    public DataResult<UpdateApplicantResponse> update(@Valid @RequestBody UpdateApplicantRequest updateApplicantRequest){
         return this.applicantService.update(updateApplicantRequest);
     }
     @DeleteMapping("/{id}")

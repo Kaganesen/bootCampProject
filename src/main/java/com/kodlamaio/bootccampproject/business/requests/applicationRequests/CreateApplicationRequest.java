@@ -4,7 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Data
 @NoArgsConstructor
@@ -12,11 +14,14 @@ import java.time.LocalDate;
 
 public class CreateApplicationRequest {
 
+    @Min(1)
+    @NotNull
     private int applicantId;
+    @Min(1)
+    @NotNull
     private int bootcampId;
+    @NotNull
     private int state;
-
-
 
 
 }

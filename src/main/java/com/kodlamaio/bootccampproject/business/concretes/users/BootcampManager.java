@@ -1,6 +1,5 @@
 package com.kodlamaio.bootccampproject.business.concretes.users;
 
-import com.kodlamaio.bootccampproject.business.abstracts.ApplicantService;
 import com.kodlamaio.bootccampproject.business.abstracts.BootcampService;
 import com.kodlamaio.bootccampproject.business.abstracts.InstructorService;
 import com.kodlamaio.bootccampproject.business.constants.Messages;
@@ -18,10 +17,10 @@ import com.kodlamaio.bootccampproject.core.utilities.results.SuccessDataResult;
 import com.kodlamaio.bootccampproject.core.utilities.results.SuccessResult;
 import com.kodlamaio.bootccampproject.dataAccess.abstracts.BootCampRepository;
 import com.kodlamaio.bootccampproject.entities.bootcamps.Bootcamp;
-import com.kodlamaio.bootccampproject.entities.users.Instructor;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,9 +32,11 @@ public class BootcampManager implements BootcampService {
     private ModelMapperService modelMapperService;
 
     private InstructorService instructorService;
+
     @Override
     public DataResult<CreateBootcampResponse> add(CreateBootcampRequest createBootcampRequest) {
-        checkIfBootcampByInstructorId(createBootcampRequest.getInstructorId());
+        this.instructorService.checkIfExistsByInstructorId(createBootcampRequest.getInstructorId());
+        checkIfFirstDateBeforeSecondDate(createBootcampRequest.getDateStart(),createBootcampRequest.getDateEnd());
         Bootcamp bootCamp = this.modelMapperService.forRequest().map(createBootcampRequest, Bootcamp.class);
         bootCamp.setId(0);
         this.bootcampRepository.save(bootCamp);
@@ -51,7 +52,8 @@ public class BootcampManager implements BootcampService {
 
     @Override
     public DataResult<UpdateBootcampResponse> update(UpdateBootcampRequest updateBootcampRequest) {
-        checkIfBootcampByInstructorId(updateBootcampRequest.getInstructorId());
+        this.instructorService.checkIfExistsByInstructorId(updateBootcampRequest.getInstructorId());
+        checkIfFirstDateBeforeSecondDate(updateBootcampRequest.getDateStart(),updateBootcampRequest.getDateEnd());
         Bootcamp bootCamp = this.modelMapperService.forRequest().map(updateBootcampRequest, Bootcamp.class);
         this.bootcampRepository.save(bootCamp);
         UpdateBootcampResponse updateBootcampResponse = this.modelMapperService.forResponse().map(bootCamp, UpdateBootcampResponse.class);
@@ -68,16 +70,21 @@ public class BootcampManager implements BootcampService {
 
     @Override
     public DataResult<GetBootcampResponse> getById(int id) {
+        checkIfExistsByBootcampId(id);
         Bootcamp bootCamp = this.bootcampRepository.findById(id).get();
         GetBootcampResponse getBootcampResponse = this.modelMapperService.forResponse().map(bootCamp, GetBootcampResponse.class);
 
         return new SuccessDataResult<>(getBootcampResponse, Messages.DataListed);
     }
 
-    private void checkIfBootcampByInstructorId(int instructorId) {
-        Instructor instructor = this.instructorService.getByInstructorId(instructorId);
-        if (instructor == null) {
-            throw new BusinessException(Messages.InstructorNoExists);
+    public void checkIfExistsByBootcampId(int id) throws BusinessException {
+        if (!this.bootcampRepository.existsById(id)) {
+            throw new BusinessException(Messages.BootcampIdNotFound + id);
+        }
+    }
+    private void checkIfFirstDateBeforeSecondDate(LocalDate dateStart , LocalDate dateEnd){
+        if (dateEnd.isBefore(dateStart) || dateStart.equals(dateEnd)){
+            throw new BusinessException(Messages.FinishDateCannotBeforeStartDate);
         }
     }
 

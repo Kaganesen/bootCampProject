@@ -32,7 +32,7 @@ public class EmployeeManager implements EmployeeService {
 
     @Override
     public DataResult<CreateEmployeeResponse> add(CreateEmployeeRequest createEmployeeRequest) {
-        checkIfEmployeeByNationalId(createEmployeeRequest.getNationalIdentity());
+        checkIfExistsByNationalIdentity(createEmployeeRequest.getNationalIdentity());
         Employee employee = this.modelMapperService.forRequest().map(createEmployeeRequest, Employee.class);
         this.employeeRepository.save(employee);
         CreateEmployeeResponse createEmployeeResponse = this.modelMapperService.forResponse().map(employee, CreateEmployeeResponse.class);
@@ -42,7 +42,7 @@ public class EmployeeManager implements EmployeeService {
 
     @Override
     public DataResult<UpdateEmployeeResponse> update(UpdateEmployeeRequest updateEmployeeRequest) {
-        checkIfEmployeeById(updateEmployeeRequest.getId());
+        checkIfExistsByEmployeeId(updateEmployeeRequest.getId());
         Employee employee = this.modelMapperService.forRequest().map(updateEmployeeRequest, Employee.class);
         this.employeeRepository.save(employee);
         UpdateEmployeeResponse updateEmployeeResponse = this.modelMapperService.forResponse().map(employee, UpdateEmployeeResponse.class);
@@ -52,7 +52,7 @@ public class EmployeeManager implements EmployeeService {
 
     @Override
     public Result delete(int id) {
-        checkIfEmployeeById(id);
+        checkIfExistsByEmployeeId(id);
         this.employeeRepository.deleteById(id);
         return new SuccessResult(Messages.DataDeleted);
     }
@@ -66,23 +66,22 @@ public class EmployeeManager implements EmployeeService {
 
     @Override
     public DataResult<GetEmployeeResponse> getById(int id) {
-        checkIfEmployeeById(id);
+        checkIfExistsByEmployeeId(id);
         Employee employee = this.employeeRepository.findById(id).get();
         GetEmployeeResponse getEmployeeResponse = this.modelMapperService.forResponse().map(employee,GetEmployeeResponse.class);
 
         return new SuccessDataResult<GetEmployeeResponse>(getEmployeeResponse,Messages.DataListed);
     }
 
-    private void checkIfEmployeeByNationalId(String nationalIdentity){
+    private void checkIfExistsByNationalIdentity(String nationalIdentity) throws BusinessException{
         if(this.employeeRepository.existsByNationalIdentity(nationalIdentity)){
-            throw new BusinessException(Messages.ExistByid);
+            throw new BusinessException(Messages.EmployeeNationalIdentityUsed + nationalIdentity);
         }
     }
 
-    private void checkIfEmployeeById(int id){
-       Employee employee = this.employeeRepository.findById(id).orElse(null);
-        if (employee == null){
-            throw new BusinessException(Messages.EmployeeNoExists);
+    private void checkIfExistsByEmployeeId(int id) throws BusinessException{
+        if (!this.employeeRepository.existsById(id)){
+            throw new BusinessException(Messages.EmployeeIDNotFound + id);
         }
     }
 }

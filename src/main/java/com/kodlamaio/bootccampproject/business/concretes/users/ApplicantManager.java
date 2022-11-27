@@ -4,10 +4,10 @@ import com.kodlamaio.bootccampproject.business.abstracts.ApplicantService;
 import com.kodlamaio.bootccampproject.business.constants.Messages;
 import com.kodlamaio.bootccampproject.business.requests.applicantRequests.CreateApplicantRequest;
 import com.kodlamaio.bootccampproject.business.requests.applicantRequests.UpdateApplicantRequest;
-import com.kodlamaio.bootccampproject.business.responses.applicatResponses.CreateApplicantResponse;
-import com.kodlamaio.bootccampproject.business.responses.applicatResponses.GetAllApplicantResponse;
-import com.kodlamaio.bootccampproject.business.responses.applicatResponses.GetApplicantResponse;
-import com.kodlamaio.bootccampproject.business.responses.applicatResponses.UpdateApplicantResponse;
+import com.kodlamaio.bootccampproject.business.responses.applicantResponses.CreateApplicantResponse;
+import com.kodlamaio.bootccampproject.business.responses.applicantResponses.GetAllApplicantResponse;
+import com.kodlamaio.bootccampproject.business.responses.applicantResponses.GetApplicantResponse;
+import com.kodlamaio.bootccampproject.business.responses.applicantResponses.UpdateApplicantResponse;
 import com.kodlamaio.bootccampproject.core.utilities.exceptions.BusinessException;
 import com.kodlamaio.bootccampproject.core.utilities.mapping.ModelMapperService;
 import com.kodlamaio.bootccampproject.core.utilities.results.DataResult;
@@ -32,29 +32,29 @@ public class ApplicantManager implements ApplicantService {
 
     @Override
     public DataResult<CreateApplicantResponse> add(CreateApplicantRequest createApplicantRequest) {
-        checkIfApplicantByNationalId(createApplicantRequest.getNationalIdentity());
-                Applicant applicant = this.modelMapperService.forRequest().map(createApplicantRequest, Applicant.class);
+        checkIfExistByNationalIdentity(createApplicantRequest.getNationalIdentity());
+        Applicant applicant = this.modelMapperService.forRequest().map(createApplicantRequest, Applicant.class);
         this.applicantRepository.save(applicant);
         CreateApplicantResponse createApplicantResponse = this.modelMapperService.forResponse().map(applicant, CreateApplicantResponse.class);
 
-        return new SuccessDataResult<CreateApplicantResponse>(createApplicantResponse, Messages.DataAdded);
+        return new SuccessDataResult<CreateApplicantResponse>(createApplicantResponse, Messages.DataAdded + createApplicantRequest.getNationalIdentity());
     }
 
     @Override
     public DataResult<UpdateApplicantResponse> update(UpdateApplicantRequest updateApplicantRequest) {
-        checkIfApplicantById(updateApplicantRequest.getId());
+        checkIfExistByApplicantId(updateApplicantRequest.getId());
         Applicant applicant = this.modelMapperService.forRequest().map(updateApplicantRequest, Applicant.class);
         this.applicantRepository.save(applicant);
         UpdateApplicantResponse updateApplicantResponse = this.modelMapperService.forResponse().map(applicant, UpdateApplicantResponse.class);
 
-        return new SuccessDataResult<UpdateApplicantResponse>(updateApplicantResponse, Messages.DataUpdated);
+        return new SuccessDataResult<UpdateApplicantResponse>(updateApplicantResponse, Messages.DataUpdated + updateApplicantRequest.getId());
     }
 
     @Override
     public Result delete(int id) {
-        checkIfApplicantById(id);
+        checkIfExistByApplicantId(id);
         this.applicantRepository.deleteById(id);
-        return new SuccessResult(Messages.DataDeleted);
+        return new SuccessResult(Messages.DataDeleted + id);
     }
 
     @Override
@@ -67,29 +67,28 @@ public class ApplicantManager implements ApplicantService {
 
     @Override
     public DataResult<GetApplicantResponse> getById(int id) {
-        checkIfApplicantById(id);
+        checkIfExistByApplicantId(id);
         Applicant applicant = this.applicantRepository.findById(id).get();
         GetApplicantResponse getApplicantResponse = this.modelMapperService.forResponse().map(applicant, GetApplicantResponse.class);
 
-        return new SuccessDataResult<GetApplicantResponse>(getApplicantResponse, Messages.DataListed);
+        return new SuccessDataResult<GetApplicantResponse>(getApplicantResponse, Messages.DataListed + id);
     }
 
     @Override
-    public void checkIfExistByApplicantId(int applicantId) {
+    public void checkIfExistByApplicantId(int id) throws BusinessException {
+        if (!this.applicantRepository.existsById(id)) {
+            throw new BusinessException(Messages.ApplicanIdNotFound + id);
+        }
 
     }
+
     @Override
-    public void checkIfApplicantByNationalId(String nationalIdentity) {
-        if (this.applicantRepository.existsByNationalIdentity(nationalIdentity)) {
-            throw new BusinessException(Messages.ExistByid);
-        }
-    }
+    public void checkIfExistByNationalIdentity(String nationalIdentity) throws BusinessException {
+        if(this.applicantRepository.existsByNationalIdentity(nationalIdentity)){
+            throw new BusinessException(Messages.ApplicantNationalIdentityUsed + nationalIdentity);
 
-    private void checkIfApplicantById(int id) {
-
-        if (this.applicantRepository.existsById(id)) {
-            throw new BusinessException(Messages.ApplicantExists);
         }
+
     }
 
 }

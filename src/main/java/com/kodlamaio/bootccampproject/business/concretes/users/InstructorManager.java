@@ -35,7 +35,7 @@ public class InstructorManager implements InstructorService {
 
     @Override
     public DataResult<CreateInstructorResponse> add(CreateInstructorRequest createInstructorRequest) {
-        checkIfInstructorByNationalId(createInstructorRequest.getNationalIdentity());
+        checkIfExistsByNationalIdentity(createInstructorRequest.getNationalIdentity());
         Instructor instructor = this.modelMapperService.forRequest().map(createInstructorRequest, Instructor.class);
         this.instructorRepository.save(instructor);
         CreateInstructorResponse createInstructorResponse = this.modelMapperService.forResponse().map(instructor, CreateInstructorResponse.class);
@@ -56,7 +56,7 @@ public class InstructorManager implements InstructorService {
 
     @Override
     public DataResult<GetInstructorResponse> getById(int id) {
-        checkIfInstructorById((id));
+        checkIfExistsByInstructorId((id));
         Instructor instructor = this.instructorRepository.findById(id);
         GetInstructorResponse getInstructorResponse = this.modelMapperService.forResponse().map(instructor, GetInstructorResponse.class);
 
@@ -65,7 +65,7 @@ public class InstructorManager implements InstructorService {
 
     @Override
     public DataResult<UpdateInstructorResponse> update(UpdateInstructorRequest updateInstructorRequest) {
-        checkIfInstructorById(updateInstructorRequest.getId());
+        checkIfExistsByInstructorId(updateInstructorRequest.getId());
         Instructor instructor = this.modelMapperService.forRequest().map(updateInstructorRequest, Instructor.class);
         this.instructorRepository.save(instructor);
         UpdateInstructorResponse updateInstructorResponse = this.modelMapperService.forResponse().map(instructor, UpdateInstructorResponse.class);
@@ -74,29 +74,22 @@ public class InstructorManager implements InstructorService {
 
     @Override
     public Result delete(int id) {
-        checkIfInstructorById(id);
+        checkIfExistsByInstructorId(id);
         this.instructorRepository.deleteById(id);
         return new SuccessResult(Messages.DataDeleted);
 
     }    //
 
-    @Override
-    public Instructor getByInstructorId(int id) {
-        Instructor instructor = this.instructorRepository.findById(id);
-        return instructor;
-    }
-
-    private void checkIfInstructorByNationalId(String nationalIdentity) {
+    private void checkIfExistsByNationalIdentity(String nationalIdentity) throws BusinessException {
 
         if (this.instructorRepository.existsByNationalIdentity(nationalIdentity)) {
-            throw new BusinessException(Messages.ExistByid);
+            throw new BusinessException(Messages.InstructorNationalIdentityNotFound + nationalIdentity);
         }
 
     }
-    private void checkIfInstructorById(int id){
-        Instructor instructor = this.instructorRepository.findById(id);
-        if (instructor == null){
-            throw new BusinessException(Messages.InstructorNoExists);
+    public void checkIfExistsByInstructorId(int id) throws BusinessException{
+        if (!this.instructorRepository.existsById(id)){
+            throw new BusinessException(Messages.InstructorIdNotFound + id);
         }
     }
 

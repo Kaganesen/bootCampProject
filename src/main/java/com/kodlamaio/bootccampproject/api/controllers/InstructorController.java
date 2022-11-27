@@ -10,6 +10,7 @@ import com.kodlamaio.bootccampproject.core.utilities.results.Result;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -30,12 +31,12 @@ public class InstructorController {
     }
 
     @PostMapping()
-    public DataResult<CreateInstructorResponse> create(@RequestBody CreateInstructorRequest createInstructorRequest){
+    public DataResult<CreateInstructorResponse> create(@Valid @RequestBody CreateInstructorRequest createInstructorRequest){
         return this.instructorService.add(createInstructorRequest);
     }
 
     @PutMapping()
-    public DataResult<UpdateInstructorResponse> update(@RequestBody UpdateInstructorRequest updateInstructorRequest){
+    public DataResult<UpdateInstructorResponse> update(@Valid @RequestBody UpdateInstructorRequest updateInstructorRequest){
         return this.instructorService.update(updateInstructorRequest);
     }
 

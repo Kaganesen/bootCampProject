@@ -13,10 +13,16 @@ import java.util.List;
 
 public interface BlacklistService {
 
-    DataResult<CreateBlacklistResponse> add (CreateBlacklistRequest createBlacklistRequest);
-    DataResult<UpdateBlacklistResponse> update (UpdateBlacklistRequest updateBlacklistRequest);
-    DataResult<GetBlacklistResponse> getById (int id);
+    DataResult<CreateBlacklistResponse> add(CreateBlacklistRequest createBlacklistRequest);
+
+    DataResult<UpdateBlacklistResponse> update(UpdateBlacklistRequest updateBlacklistRequest);
+
+    DataResult<GetBlacklistResponse> getById(int id);
+
     DataResult<List<GetAllBlacklistResponse>> getAll();
-    Result delete (int id);
-    void checkIfExistsByApplicantId(int id);
+
+    Result delete(int id);
+
+    void checkIfExistsByBlacklistId(int id);
+    void checkIfNotExistsByApplicantId(int id);
 }

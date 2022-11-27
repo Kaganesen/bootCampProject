@@ -12,6 +12,7 @@ import com.kodlamaio.bootccampproject.core.utilities.results.Result;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -22,11 +23,11 @@ public class ApplicationController {
     private ApplicationService applicationService;
 
     @PostMapping
-    DataResult<CreateApplicationResponse> add (@RequestBody CreateApplicationRequest createApplicationRequest){
+    DataResult<CreateApplicationResponse> create (@Valid @RequestBody CreateApplicationRequest createApplicationRequest){
         return this.applicationService.add(createApplicationRequest);
     }
     @PutMapping
-    DataResult<UpdateApplicationResponse> update (@RequestBody UpdateApplicationRequest updateApplicationRequest){
+    DataResult<UpdateApplicationResponse> update (@Valid @RequestBody UpdateApplicationRequest updateApplicationRequest){
         return this.applicationService.update(updateApplicationRequest);
     }
 

@@ -1,4 +1,4 @@
-package com.kodlamaio.bootccampproject.business.responses.employeeResponses;
+package com.kodlamaio.bootccampproject.business.responses.applicantResponses;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,13 +9,14 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetAllEmployeeResponse {
+public class GetApplicantResponse {
 
     private int id;
     private String firstName;
     private String lastName;
     private String email;
-    private String position;
+    private String about;
     private String nationalIdentity;
     private LocalDate dateOfBirth;
+
 }

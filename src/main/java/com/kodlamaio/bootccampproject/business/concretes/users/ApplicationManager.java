@@ -2,6 +2,8 @@ package com.kodlamaio.bootccampproject.business.concretes.users;
 
 import com.kodlamaio.bootccampproject.business.abstracts.ApplicantService;
 import com.kodlamaio.bootccampproject.business.abstracts.ApplicationService;
+import com.kodlamaio.bootccampproject.business.abstracts.BlacklistService;
+import com.kodlamaio.bootccampproject.business.abstracts.BootcampService;
 import com.kodlamaio.bootccampproject.business.constants.Messages;
 import com.kodlamaio.bootccampproject.business.requests.applicationRequests.CreateApplicationRequest;
 import com.kodlamaio.bootccampproject.business.requests.applicationRequests.UpdateApplicationRequest;
@@ -33,9 +35,16 @@ public class ApplicationManager implements ApplicationService {
     private ModelMapperService modelMapperService;
 
     private ApplicantService applicantService;
+    private BootcampService bootcampService;
+    private BlacklistService blacklistService;
 
     @Override
     public DataResult<CreateApplicationResponse> add(CreateApplicationRequest createApplicationRequest) {
+
+        this.blacklistService.checkIfNotExistsByApplicantId(createApplicationRequest.getApplicantId());
+        this.applicantService.checkIfExistByApplicantId(createApplicationRequest.getApplicantId());
+        this.bootcampService.checkIfExistsByBootcampId(createApplicationRequest.getBootcampId());
+
         Application application = this.modelMapperService.forRequest().map(createApplicationRequest, Application.class);
         this.applicationRepository.save(application);
         CreateApplicationResponse createApplicationResponse = this.modelMapperService.forResponse().map(application, CreateApplicationResponse.class);
@@ -52,7 +61,8 @@ public class ApplicationManager implements ApplicationService {
 
     @Override
     public DataResult<UpdateApplicationResponse> update(UpdateApplicationRequest updateApplicationRequest) {
-        checkIfNotExistsApplicationByid(updateApplicationRequest.getApplicantId());
+        this.applicantService.checkIfExistByApplicantId(updateApplicationRequest.getApplicantId());
+        this.bootcampService.checkIfExistsByBootcampId(updateApplicationRequest.getBootcampId());
         Application application = this.modelMapperService.forRequest().map(updateApplicationRequest, Application.class);
         this.applicationRepository.save(application);
         UpdateApplicationResponse updateApplicationResponse = this.modelMapperService.forResponse().map(application, UpdateApplicationResponse.class);
@@ -79,11 +89,9 @@ public class ApplicationManager implements ApplicationService {
     private void checkIfNotExistsApplicationByid(int id) {
 
         if (!this.applicationRepository.existsById(id)) {
-            throw new BusinessException(Messages.ApplicationNotExists);
+            throw new BusinessException(Messages.ApplicationNotExists + id);
         }
     }
-
-
 
 
 }

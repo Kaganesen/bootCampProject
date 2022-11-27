@@ -16,7 +16,7 @@ public class UpdateInstructorResponse {
 
     private String firstName;
 
-    private String nationalId;
+    private String nationalIdentity;
 
     private LocalDate dateOfBirth;
 

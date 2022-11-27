@@ -11,6 +11,7 @@ import com.kodlamaio.bootccampproject.core.utilities.results.Result;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -29,11 +30,11 @@ public class EmployeeController {
          return this.employeeService.getAll();
      }
      @PostMapping()
-    public DataResult<CreateEmployeeResponse> create(@RequestBody CreateEmployeeRequest createEmployeeRequest){
+    public DataResult<CreateEmployeeResponse> create(@Valid @RequestBody CreateEmployeeRequest createEmployeeRequest){
          return this.employeeService.add(createEmployeeRequest);
      }
      @PutMapping()
-    public  DataResult<UpdateEmployeeResponse> update (@RequestBody UpdateEmployeeRequest updateEmployeeRequest){
+    public  DataResult<UpdateEmployeeResponse> update (@Valid @RequestBody UpdateEmployeeRequest updateEmployeeRequest){
          return this.employeeService.update(updateEmployeeRequest);
      }
      @DeleteMapping("/{id}")

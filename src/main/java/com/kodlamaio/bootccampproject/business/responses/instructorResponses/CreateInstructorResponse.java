@@ -19,7 +19,7 @@ public class CreateInstructorResponse {
 
     private String lastName;
 
-    private String nationalId;
+    private String nationalIdentity;
 
     private LocalDate dateOfBirth;
 

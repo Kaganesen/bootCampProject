@@ -1,9 +1,9 @@
 package com.kodlamaio.bootccampproject.business.abstracts;
 
 import com.kodlamaio.bootccampproject.business.requests.applicantRequests.CreateApplicantRequest;
-import com.kodlamaio.bootccampproject.business.requests.applicantRequests.DeleteApplicantRequest;
 import com.kodlamaio.bootccampproject.business.requests.applicantRequests.UpdateApplicantRequest;
-import com.kodlamaio.bootccampproject.business.responses.applicatResponses.*;
+import com.kodlamaio.bootccampproject.business.responses.applicantResponses.*;
+import com.kodlamaio.bootccampproject.core.utilities.exceptions.BusinessException;
 import com.kodlamaio.bootccampproject.core.utilities.results.DataResult;
 import com.kodlamaio.bootccampproject.core.utilities.results.Result;
 
@@ -19,7 +19,7 @@ public interface ApplicantService {
 
     DataResult<GetApplicantResponse> getById(int id);
 
-    void checkIfExistByApplicantId(int applicantId);
+    void checkIfExistByApplicantId(int id)throws BusinessException;
 
-    void checkIfApplicantByNationalId(String nationalIdentity);
+    void checkIfExistByNationalIdentity(String nationalIdentity)throws BusinessException;
 }
